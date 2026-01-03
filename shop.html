@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shop - Women Clothing | ShoPperZ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-cover bg-center min-h-screen" style="background-image:url('images/women-bg.jpg')">
+
+<nav class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 p-4 text-white text-lg flex flex-wrap justify-center gap-4 shadow-xl">
+  <a href="index.html">Home</a>
+  <a href="cart.html">Cart</a>
+</nav>
+
+<h2 class="text-4xl text-center mt-10 font-bold text-white drop-shadow-lg">Women’s Collection</h2>
+<div id="shoplist" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-10"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = { /* 🔴 PASTE CONFIG */ };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const snap = await getDocs(collection(db, "products"));
+shoplist.innerHTML = snap.docs.map(d=>`
+<div class="bg-white/90 p-4 rounded-2xl shadow-xl hover:scale-105 transition">
+  <img src="${d.data().image}" class="rounded-lg w-full h-60 object-cover">
+  <h3 class="text-2xl text-pink-700 mt-2 font-semibold">${d.data().name}</h3>
+  <p class="text-green-700 text-xl">₹${d.data().price}</p>
+  <a href="https://wa.me/91XXXXXXXXXX?text=Order%20${d.data().name}%20-%20₹${d.data().price}"
+     class="bg-green-600 text-white px-4 py-2 mt-3 inline-block rounded-xl text-xl font-semibold">Order</a>
+</div>
+`).join("");
+</script>
+
+</body>
+</html>
